@@ -10,4 +10,10 @@ public class SaleController :Controller
     {
         return View();
     }
+
+    [Route("Edit")]
+    public IActionResult Edit()
+    {
+        return View();
+    }
 }

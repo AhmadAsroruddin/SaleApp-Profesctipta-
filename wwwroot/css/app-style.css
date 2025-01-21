@@ -1,0 +1,16 @@
+.btn-red{
+    background-color: rgba(136, 7, 67, 1);
+    border-radius: 10px;
+    width: 200px;
+}
+
+.btn-export{
+    background-color: rgba(0, 65, 101, 1);
+    border-radius: 10px;
+    width: 200px;
+}
+.btn-hint{
+    background-color: rgba(255, 229, 0, 1);
+    border-radius: 10px;
+    width: 150px;
+}

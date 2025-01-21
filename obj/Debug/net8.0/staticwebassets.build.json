@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iYaOcCYwRVhc/q0Tl+wZDuaN/Y6W356T7LQnJq/QU60=",
+  "Hash": "4BOs6HNwSu7ixdbfU7wDmYujOXhE8dHNxsld3xTFsEM=",
   "Source": "SaleApp",
   "BasePath": "_content/SaleApp",
   "Mode": "Default",
@@ -15272,6 +15272,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/assets/plugins/global/plugins.bundle.js"
+    },
+    {
+      "Identity": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/css/app-style.css",
+      "SourceId": "SaleApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/",
+      "BasePath": "_content/SaleApp",
+      "RelativePath": "css/app-style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/app-style.css"
     },
     {
       "Identity": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/css/site.css",

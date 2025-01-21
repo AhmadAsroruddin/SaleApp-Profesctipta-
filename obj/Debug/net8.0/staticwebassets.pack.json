@@ -3209,6 +3209,10 @@
       "PackagePath": "staticwebassets/assets/plugins/global/plugins.bundle.js"
     },
     {
+      "Id": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/css/app-style.css",
+      "PackagePath": "staticwebassets/css/app-style.css"
+    },
+    {
       "Id": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },

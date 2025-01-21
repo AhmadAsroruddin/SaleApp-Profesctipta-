@@ -6,18 +6,43 @@
     <title>@ViewData["Title"] - SaleApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/app-style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
     @* <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" /> *@
+     <style>
+        .gradient-background {
+            background: linear-gradient(to right, rgba(17, 111, 196, 1), rgba(0, 15, 51, 1));        
+        }
+      
+        html, body {
+            height: 100%; 
+            margin: 0;
+        }
 
+        .bg-main {
+            background-color:  #78a4d1; /* Warna hijau */
+            display: flex;
+            flex-direction: column;
+            height: 93%; /* Membuat elemen ini mengisi sisa tinggi layar */
+        }
+
+        main {
+            flex-grow: 1; /* Membuat <main> mengisi ruang yang tersisa */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light gradient-background border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand " asp-area="" asp-controller="Home" asp-action="Index">SaleApp</a>
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">SaleApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,8 +60,8 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="bg-main">
+        <main role="main" class="pb-3 bg-main">
             @RenderBody()
         </main>
     </div>
