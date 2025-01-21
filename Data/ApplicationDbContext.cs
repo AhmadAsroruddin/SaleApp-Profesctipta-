@@ -11,8 +11,8 @@ namespace SaleApp.Data
         }
 
         public DbSet<Item> Items { get; set; }
-        public DbSet<Customer> Items { get; set; }
-        public DbSet<Order> Items { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Order> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
