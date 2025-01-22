@@ -86,35 +86,30 @@ function addItemRow() {
         </tr>
     `;
     tableBody.insertAdjacentHTML('beforeend', row);
+    updateRowIndices()
 }
 
 function saveItemRow(button) {
-    // Get the row of the button clicked
     let row = button.closest('tr');
     
-    // Disable inputs (make them readonly)
     let inputs = row.querySelectorAll('input');
     inputs.forEach(input => {
         input.readOnly = true;
     });
 
-    // Change the "Save" button to "Edit"
     let saveButton = row.querySelector('.btn-primary');
     saveButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
     saveButton.setAttribute('onclick', 'editItemRow(this)');
 }
 
 function editItemRow(button) {
-    // Get the row of the button clicked
     let row = button.closest('tr');
     
-    // Enable inputs for editing
     let inputs = row.querySelectorAll('input');
     inputs.forEach(input => {
         input.readOnly = false;
     });
 
-    // Change the "Edit" button back to "Save"
     let saveButton = row.querySelector('.btn-primary');
     saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
     saveButton.setAttribute('onclick', 'saveItemRow(this)');
@@ -123,9 +118,34 @@ function editItemRow(button) {
 function deleteItemRow(button) {
     let row = button.closest('tr');
     row.remove();
+    updateRowIndices()
 }
 
 function selectCustomer(customer) {
     document.getElementById('customerDropdown').innerText = customer;
     document.getElementById('selectedCustomer').value = customer;
+}
+
+
+function updateRowIndices() {
+    let tableBody = document.getElementById('itemsTableBody');
+    let rows = tableBody.querySelectorAll('tr');
+    
+    rows.forEach((row, index) => {
+        let indexCell = row.querySelector('th');  
+        if (indexCell) {
+            indexCell.textContent = index + 1; // Memperbarui nomor urut
+        }
+
+        let itemNameElement = row.querySelector('input[name*="ITEM_NAME"]');
+        let quantityElement = row.querySelector('input[name*="QUANTITY"]');
+        let priceElement = row.querySelector('input[name*="PRICE"]');
+        let totalElement = row.querySelector('input[name*="TOTAL"]');
+
+        // Memperbarui nama input sesuai dengan urutan baru
+        if (itemNameElement) itemNameElement.setAttribute('name', `Form.Items[${index}].ITEM_NAME`);
+        if (quantityElement) quantityElement.setAttribute('name', `Form.Items[${index}].QUANTITY`);
+        if (priceElement) priceElement.setAttribute('name', `Form.Items[${index}].PRICE`);
+        if (totalElement) totalElement.setAttribute('name', `Form.Items[${index}].TOTAL`);
+    });
 }
