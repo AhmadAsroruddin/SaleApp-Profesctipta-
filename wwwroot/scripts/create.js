@@ -31,25 +31,52 @@ function validateForm(event) {
     var form = $("#orderForm");
     var itemsTableBody = document.getElementById('itemsTableBody');
     var itemRows = itemsTableBody.querySelectorAll('tr');
-    var validItems = false;
+    var validItems = true;
     
-    itemRows.forEach(function(row) {
-        var itemName = row.querySelector('input[name^="Form.Items"]').value;
-        var quantity = row.querySelector('input[name$="QUANTITY"]').value;
-        var price = row.querySelector('input[name$="PRICE"]').value;
+    let errorMessage = "Please add at least one item with valid information.";
+    let unsavedChanges = false;
+
+    itemRows.forEach(function(row, index) {
+        var itemNameElement = row.querySelector(`input[name="Form.Items[${index}].ITEM_NAME"]`);
+        var quantityElement = row.querySelector(`input[name="Form.Items[${index}].QUANTITY"]`);
+        var priceElement = row.querySelector(`input[name="Form.Items[${index}].PRICE"]`);
+
+        var itemName = itemNameElement ? itemNameElement.value.trim() : '';
+        var quantity = quantityElement ? quantityElement.value.trim() : '';
+        var price = priceElement ? priceElement.value.trim() : '';
         
-        if (itemName && quantity && price) {
-            validItems = true;
+        let isEditing = !itemNameElement.readOnly || !quantityElement.readOnly || !priceElement.readOnly;
+
+        if (isEditing) {
+            unsavedChanges = true;
+        }
+
+        if (itemName === "" || quantity === "" || price === "" || quantity <= 0 || price <= 0) {
+            validItems = false;
+            errorMessage = "Please ensure all fields are filled with valid values.";
+        }
+
+        if (itemName == "" && quantity == "" && price == "") {
+            row.remove();  
         }
     });
 
+    if (unsavedChanges) {
+        $('#errorModal').modal('show');
+        $('#errorMessage').text("Please save or discard changes before submitting the form.");
+        return;
+    }
+
+    itemRows = itemsTableBody.querySelectorAll('tr'); 
+    if (itemRows.length == 0) {
+        validItems = false;
+    }
+
     if (!validItems) {
         $('#errorModal').modal('show');
-        $('#errorMessage').text('Please add at least one item with valid information.');
+        $('#errorMessage').text(errorMessage);
     } else {
-        if (form.valid()) {
-            form.submit();
-        }
+        form.submit();
     }
 }
 

@@ -34,7 +34,9 @@ function validateForm(event) {
     var itemRows = itemsTableBody.querySelectorAll('tr');
     var validItems = true;
     
-    let errorMessage = "Please add at least one item with valid information."
+    let errorMessage = "Please add at least one item with valid information.";
+    let unsavedChanges = false;
+
     itemRows.forEach(function(row, index) {
         var itemNameElement = row.querySelector(`input[name="Form.Items[${index}].ITEM_NAME"]`);
         var quantityElement = row.querySelector(`input[name="Form.Items[${index}].QUANTITY"]`);
@@ -43,19 +45,31 @@ function validateForm(event) {
         var itemName = itemNameElement ? itemNameElement.value.trim() : '';
         var quantity = quantityElement ? quantityElement.value.trim() : '';
         var price = priceElement ? priceElement.value.trim() : '';
-        console.log(itemName +" " + index)
+        
+        let isEditing = !itemNameElement.readOnly || !quantityElement.readOnly || !priceElement.readOnly;
+
+        if (isEditing) {
+            unsavedChanges = true;
+        }
+
         if (itemName === "" || quantity === "" || price === "" || quantity <= 0 || price <= 0) {
             validItems = false;
             errorMessage = "Please ensure all fields are filled with valid values.";
         }
-        if (itemName == "" && quantity == "" && price == "" ) {
+
+        if (itemName == "" && quantity == "" && price == "") {
             row.remove();  
         }
     });
 
+    if (unsavedChanges) {
+        $('#errorModal').modal('show');
+        $('#errorMessage').text("Please save or discard changes before submitting the form.");
+        return;
+    }
+
     itemRows = itemsTableBody.querySelectorAll('tr'); 
     if (itemRows.length == 0) {
-        console.log(itemRows.length);
         validItems = false;
     }
 
@@ -66,6 +80,7 @@ function validateForm(event) {
         form.submit();
     }
 }
+
 
 function addItemRow() {
     let tableBody = document.getElementById('itemsTableBody');
@@ -120,13 +135,41 @@ function saveItemRow(button) {
 function editItemRow(button) {
     let row = button.closest('tr');
     let inputs = row.querySelectorAll('input');
+    
     inputs.forEach(input => {
+        input.dataset.originalValue = input.value;
         input.readOnly = false;
     });
+
     let saveButton = row.querySelector('.btn-primary');
     saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
     saveButton.setAttribute('onclick', 'saveItemRow(this)');
+
+    let cancelButton = row.querySelector('.btn-danger');
+    cancelButton.innerHTML = '<i class="fa-solid fa-times"></i>';
+    cancelButton.setAttribute('onclick', 'cancelEditItemRow(this)');
 }
+
+function cancelEditItemRow(button) {
+    let row = button.closest('tr');
+    let inputs = row.querySelectorAll('input');
+    
+    inputs.forEach(input => {
+        if (input.dataset.originalValue !== undefined) {
+            input.value = input.dataset.originalValue;
+        }
+        input.readOnly = true;
+    });
+
+    let cancelButton = row.querySelector('.btn-danger');
+    cancelButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    cancelButton.setAttribute('onclick', 'deleteRow(this)');
+
+    let saveButton = row.querySelector('.btn-primary');
+    saveButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+    saveButton.setAttribute('onclick', 'editItemRow(this)');
+}
+
 
 function deleteRow(button) {
     let row = button.closest('tr');
