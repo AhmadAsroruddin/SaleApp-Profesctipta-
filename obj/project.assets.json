@@ -5394,11 +5394,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/SaleApp.csproj",
+      "projectUniqueName": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp-Profesctipta-/SaleApp.csproj",
       "projectName": "SaleApp",
-      "projectPath": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/SaleApp.csproj",
+      "projectPath": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp-Profesctipta-/SaleApp.csproj",
       "packagesPath": "/Users/ahmadasroruddin/.nuget/packages/",
-      "outputPath": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/obj/",
+      "outputPath": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp-Profesctipta-/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/ahmadasroruddin/.nuget/NuGet/NuGet.Config"
