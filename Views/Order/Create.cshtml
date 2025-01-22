@@ -90,12 +90,20 @@
             <tbody class="table-group-divider" id="itemsTableBody">
                 
             </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="3">Total Quantity</th>
+                    <td id="totalQuantity">0</td>
+                    <th scope="row" colspan="1">Total</th>
+                    <td id="totalPrice">0</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
     <div class="row w-max justify-content-center mb-4">
         <button type="submit" class="btn btn-red text-light" style="margin-right: 1rem;" onclick="validateForm(event)">Save</button>
-        <a class="btn btn-back text-light">Close</a>
+        <a asp-action="Index" class="btn btn-back text-light">Close</a>
     </div>
 </form>
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
@@ -116,6 +124,30 @@
 </div>
 
 <script>
+    function updateFooterTotal() {
+        let totalQuantity = 0;
+        let totalPrice = 0;
+        
+        document.querySelectorAll('#itemsTableBody tr').forEach(function(row) {
+            let qty = row.querySelector('input[name*="QUANTITY"]').value;
+            let price = row.querySelector('input[name*="PRICE"]').value;
+            let total = row.querySelector('input[name*="TOTAL"]');
+            
+            if (qty && price) {
+                total.value = (qty * price).toFixed(2);
+                
+                totalQuantity += parseInt(qty);
+                totalPrice += parseFloat(qty * price);
+            }
+        });
+        
+        document.getElementById('totalQuantity').textContent = totalQuantity;
+        document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+    }
+    
+    updateFooterTotal();
+</script>
+<script>
     function validateForm(event) {
         event.preventDefault();
         
@@ -126,8 +158,8 @@
         
         itemRows.forEach(function(row) {
             var itemName = row.querySelector('input[name^="Form.Items"]').value;
-            var quantity = row.querySelector('input[name$="Quantity"]').value;
-            var price = row.querySelector('input[name$="Price"]').value;
+            var quantity = row.querySelector('input[name$="QUANTITY"]').value;
+            var price = row.querySelector('input[name$="PRICE"]').value;
             
             if (itemName && quantity && price) {
                 validItems = true;
@@ -144,7 +176,18 @@
         }
     }
 
+    function updateTotal(inputElement) {
+        updateFooterTotal()
+        let row = inputElement.closest('tr');
+        
+        let quantity = parseFloat(row.querySelector('input[name$="QUANTITY"]').value) || 0;
+        let price = parseFloat(row.querySelector('input[name$="PRICE"]').value) || 0;
+        
+        let total = quantity * price;
 
+        let totalInput = row.querySelector('input[name$="TOTAL"]');
+        totalInput.value = total.toFixed(2); 
+    }
     function addItemRow() {
         let tableBody = document.getElementById('itemsTableBody');
         let rowCount = tableBody.rows.length + 1;
@@ -160,9 +203,9 @@
                     </button>
                 </td>
                 <td><input type="text" class="form-control" name="Form.Items[${rowCount - 1}].ITEM_NAME" /></td>
-                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Quantity" /></td>
-                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Price" /></td>
-                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Total" readonly /></td>
+                <td><input type="number" class="form-control" onchange="updateTotal(this)" name="Form.Items[${rowCount - 1}].QUANTITY" /></td>
+                <td><input type="number" class="form-control" onchange="updateTotal(this)" name="Form.Items[${rowCount - 1}].PRICE" /></td>
+                <td><input type="number" class="form-control"  name="Form.Items[${rowCount}].TOTAL" readonly /></td>
             </tr>
         `;
         tableBody.insertAdjacentHTML('beforeend', row);
