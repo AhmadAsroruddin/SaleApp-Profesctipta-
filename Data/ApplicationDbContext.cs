@@ -18,7 +18,7 @@ namespace SaleApp.Data
         {
             modelBuilder.Entity<Item>()
                 .ToTable("SO_ITEM", "dbo");
-            modelBuilder.Entity<Item>()
+            modelBuilder.Entity<Order>()
                 .ToTable("SO_ORDER", "dbo");
             modelBuilder.Entity<Customer>()
                 .ToTable("COM_CUSTOMER", "dbo");
@@ -27,6 +27,18 @@ namespace SaleApp.Data
                 .Property(c => c.COM_CUSTOMER_ID)
                 .HasColumnName("COM_CUSTOMER_ID")  // Nama kolom
                 .ValueGeneratedOnAdd(); 
+            modelBuilder.Entity<Item>()
+                .Property(c => c.SO_ITEM_ID)
+                .HasColumnName("SO_ITEM_ID")  // Nama kolom
+                .ValueGeneratedOnAdd(); 
+            modelBuilder.Entity<Order>()
+                .Property(c => c.SO_ORDER_ID)
+                .HasColumnName("SO_ORDER_ID")  // Nama kolom
+                .ValueGeneratedOnAdd(); 
+
+                modelBuilder.Entity<Item>()
+                .Property(e => e.PRICE)
+                .HasColumnType("FLOAT"); 
 
         }
 

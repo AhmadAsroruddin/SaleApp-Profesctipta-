@@ -9,12 +9,12 @@ public class Item:BaseModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-    public int SO_ITEM_ID { get; set; }   
-    public int SO_ORDER_ID { get; set; } 
+    public long SO_ITEM_ID { get; set; }   
+    public long SO_ORDER_ID { get; set; } 
     [ValidateNever]
     [ForeignKey("SO_ORDER_ID")] 
-    public required Order? Order { get; set; }
+    public Order? Order { get; set; }
     public required string ITEM_NAME { get; set; } 
     public int QUANTITY { get; set; }    
-    public double PRICE { get; set; }  
+    public float PRICE { get; set; }  
 }
