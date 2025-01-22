@@ -11,6 +11,12 @@ public class SaleController :Controller
         return View();
     }
 
+    [Route("Create")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
     [Route("Edit")]
     public IActionResult Edit()
     {

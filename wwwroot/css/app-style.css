@@ -14,3 +14,8 @@
     border-radius: 10px;
     width: 150px;
 }
+.btn-back{
+    background-color: rgba(0, 42, 92, 1);
+    border-radius: 10px;
+    width: 200px;
+}
