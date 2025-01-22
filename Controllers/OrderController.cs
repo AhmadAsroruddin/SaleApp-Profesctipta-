@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using SaleApp.DTO;
 using SaleApp.Models;
 using SaleApp.Repositories.Interface;
 using SaleApp.ViewModels;
+using Newtonsoft.Json.Linq;
+
 
 namespace SaleApp.Controllers;
 
@@ -267,5 +271,45 @@ public class OrderController :Controller
         return Ok();
     }
 
+    [Route("ExportExcel")]
+    public IActionResult ExportExcel(DateTime? orderDate)
+    {
+        var orders = unitOfWork.Order.GetAll(e => orderDate == null || e.ORDER_DATE == orderDate, includeProperties:["Customer"]);
+
+        using var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("Sale");
+
+        worksheet.Column(1).Width = 5;  
+        worksheet.Column(2).Width = 15; 
+        worksheet.Column(3).Width = 30;
+        worksheet.Column(4).Width = 20;
+
+        string[] headers = ["No", "Sales Order", "Order Date", "Customer"];
+        for(int x =0; x< headers.Length; x++)
+        {
+            worksheet.Cells[1, x + 1].Value = headers[x];
+            worksheet.Cells[1, x + 1].Style.Font.Bold = true;
+            worksheet.Cells[1, x + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[1, x + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;   
+        }
+
+        int i = 0;
+        int row = 2;
+        foreach (var order in orders)
+        {
+            row += i;
+            worksheet.Cells[row, 1].Value = i + 1;
+            worksheet.Cells[row, 2].Value = order.ORDER_NO;
+            worksheet.Cells[row, 3].Value = order.ORDER_DATE;
+            worksheet.Cells[row, 4].Value = order.Customer!.CUSTOMER_NAME;
+            i++;
+        }
+
+        var fileBytes = package.GetAsByteArray();
+        var fileName = "Sale-report.xlsx";
+
+
+        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
 
 }

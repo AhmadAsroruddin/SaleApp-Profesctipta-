@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "4BOs6HNwSu7ixdbfU7wDmYujOXhE8dHNxsld3xTFsEM=",
+  "Hash": "54+J4XlTJ2mqsQK4rPKg181vTTbcPjga3a4wswdEOIs=",
   "Source": "SaleApp",
   "BasePath": "_content/SaleApp",
   "Mode": "Default",
@@ -16469,6 +16469,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/lib/jquery/LICENSE.txt"
+    },
+    {
+      "Identity": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/scripts/create.js",
+      "SourceId": "SaleApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/",
+      "BasePath": "_content/SaleApp",
+      "RelativePath": "scripts/create.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/scripts/create.js"
+    },
+    {
+      "Identity": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/scripts/edit.js",
+      "SourceId": "SaleApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/",
+      "BasePath": "_content/SaleApp",
+      "RelativePath": "scripts/edit.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/scripts/edit.js"
     }
   ]
 }

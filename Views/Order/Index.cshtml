@@ -41,9 +41,9 @@
     <div class="row w-max justify-content-between mt-4">
       <div class="col-md-7">
         <a asp-controller="Order" asp-action="Create" class="btn btn-red text-light">Add New Data</a>
-        <button type="button" class="btn btn-export text-light">
+        <a id="download" asp-action="ExportExcel" asp-controller="Order" class="btn btn-export text-light">
             <i class="fa fa-file-excel"></i> Export To Excel
-        </button>
+        </a>
       </div>
       <div class="col-md-4 text-end">
         <button type="button" class="btn btn-hint text-light">
@@ -90,7 +90,21 @@
     }
 </script>
 
+
+
 @section Scripts {
+    <script>
+      $('#download').on('click', function (e) {
+        console.log("kbsnlkdnso0")
+            e.preventDefault()
+            var orderDate = $('#orderDate').val();
+          
+            var url = $(this).attr('href') + 
+                    '?orderDate=' + orderDate 
+            window.location.href = url;
+
+        })
+    </script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>
       var deleteOrderId = null;  // Variable to store the order ID to be deleted

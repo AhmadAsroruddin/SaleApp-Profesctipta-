@@ -3461,6 +3461,14 @@
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
     },
     {
+      "Id": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/scripts/create.js",
+      "PackagePath": "staticwebassets/scripts/create.js"
+    },
+    {
+      "Id": "/Users/ahmadasroruddin/Development/Profescipta/SaleApp/wwwroot/scripts/edit.js",
+      "PackagePath": "staticwebassets/scripts/edit.js"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.SaleApp.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
