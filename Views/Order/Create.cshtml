@@ -78,7 +78,7 @@
     <div class="row bg-white" style="margin-left: 2rem; margin-right: 2rem; margin-bottom: 2rem;">
         <table class="table table-striped w-max" id="itemsTable">
             <thead>
-                <tr class="table-primary">
+                <tr class="text-light" style="background-color: rgba(0, 42, 92, 1);">
                     <th scope="col">No</th>
                     <th scope="col">Action</th>
                     <th scope="col">Item Name</th>
@@ -124,24 +124,20 @@
         var itemRows = itemsTableBody.querySelectorAll('tr');
         var validItems = false;
         
-        // Loop through rows to check if any item row has non-empty fields
         itemRows.forEach(function(row) {
             var itemName = row.querySelector('input[name^="Form.Items"]').value;
             var quantity = row.querySelector('input[name$="Quantity"]').value;
             var price = row.querySelector('input[name$="Price"]').value;
             
-            // If any item row has non-empty values, set validItems to true
             if (itemName && quantity && price) {
                 validItems = true;
             }
         });
 
         if (!validItems) {
-            // Show error modal if no valid items
             $('#errorModal').modal('show');
             $('#errorMessage').text('Please add at least one item with valid information.');
         } else {
-            // If form is valid, submit the form
             if (form.valid()) {
                 form.submit();
             }

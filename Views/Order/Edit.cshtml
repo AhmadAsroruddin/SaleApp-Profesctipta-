@@ -1,92 +1,241 @@
+@using SaleApp.ViewModels
 @{
     ViewData["Title"] = "Edit Sales Order";
     Layout = "_Layout";
 }
 
-<div class="p-2 mt-2 container-fluid d-flex justify-content-center align-items-center" style="height: auto; background-color: rgba(0, 42, 92, 1);">
-    <h2 class="text-white fs-4">Sale Order Information <i class="fa-solid fa-angles-down fa-sm"></i> </h2>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 
-<div class="row justify-content-around mt-4">
-    <div class="col-md-4">
-        <div class="mb-3 d-flex align-items-center">
-            <label for="orderNumber" class="form-label text-nowrap me-3" style="min-width: 150px;">Sales Order Number*</label>
-            <div class="flex-grow-1">
-                <input type="text" class="border-1 form-control border-dark w-100" id="orderNumber" name="OrderNumber" placeholder="" style="border-radius: 10px;"/>
+@model UpdateOrderVM
+
+<form asp-action="UpdateOrder" method="post" id="orderForm">
+
+    <div class="p-2 mt-2 container-fluid d-flex justify-content-center align-items-center" style="height: auto; background-color: rgba(0, 42, 92, 1);">
+        <h2 class="text-white fs-4">Sale Order Information <i class="fa-solid fa-angles-down fa-sm"></i> </h2>
+    </div>
+    <input type="hidden" value="@Model.Form.SO_ORDER_ID" asp-for="Form.SO_ORDER_ID">
+    <div class="row justify-content-around mt-4">
+        <div class="col-md-4">
+            <div class="mb-3 d-flex align-items-center">
+                <label for="orderNumber" class="form-label text-nowrap me-3" style="min-width: 150px;">Sales Order Number*</label>
+                <div class="flex-grow-1">
+                    <input type="text" class="border-1 form-control border-dark w-100" id="orderNumber" asp-for="Form.ORDER_NO" placeholder="" style="border-radius: 10px;"/>
+                    <span asp-validation-for="Form.ORDER_NO" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+                <label for="orderDate" class="form-label text-nowrap me-3" style="min-width: 150px;">Order Date</label>
+                <div class="flex-grow-1">
+                    <input type="date" class="border-1 form-control border-dark w-100" id="orderDate"  asp-for="Form.ORDER_DATE" placeholder="" style="border-radius: 10px;"/>
+                    <span asp-validation-for="Form.ORDER_DATE" class="text-danger"></span>
+                </div>
             </div>
         </div>
-        <div class="mb-3 d-flex align-items-center">
-            <label for="orderDate" class="form-label text-nowrap me-3" style="min-width: 150px;">Order Date</label>
-            <div class="flex-grow-1">
-                <input type="date" class="border-1 form-control border-dark w-100" id="orderDate" name="orderDate" placeholder="" style="border-radius: 10px;"/>
+
+        <div class="col-md-4">
+            <div class="mb-3 d-flex align-items-center">
+                <label for="customer" class="form-label me-3 text-nowrap" style="min-width: 150px;">Customer</label>
+                <select class="form-select" aria-label="Default select example" asp-for="Form.COM_CUSTOMER_ID">
+                    <option>Open this select menu</option>
+                    @foreach (var customer in Model.Customers)
+                    {
+                        <option value="@customer.COM_CUSTOMER_ID">@customer.CUSTOMER_NAME</option>
+                    }
+                </select>
+                <span asp-validation-for="Form.COM_CUSTOMER_ID" class="text-danger"></span>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+                <label for="address" class="form-label me-3 text-nowrap" style="min-width: 150px;">Address</label>
+                <div class="flex-grow-1">
+                    <textarea class="form-control border-dark" id="address" rows="4" placeholder="Enter your address" style="border-radius: 10px;" asp-for="Form.ADDRESS"></textarea>
+                    <span asp-validation-for="Form.ADDRESS" class="text-danger"></span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="mb-3 d-flex align-items-center">
-            <label for="customer" class="form-label me-3 text-nowrap" style="min-width: 150px;">Customer</label>
-            <input type="text" class="border-1 form-control border-dark flex-grow-1" id="customer" name="customer" placeholder="Enter customer" style="border-radius: 10px;"/>
+    <div class="p-2 mt-2 container-fluid d-flex justify-content-center align-items-center" style="height: auto; background-color: rgba(0, 42, 92, 1);">
+        <h2 class="text-white fs-4">Detail Item Information <i class="fa-solid fa-angles-down fa-sm"></i> </h2>
+    </div>
+
+    <div class="row w-max justify-content-between p-4">
+        <div class="col-md-7">
+            <a onclick="addItemRow()" class="btn btn-red text-light">Add Item</a>
         </div>
-        <div class="mb-3 d-flex align-items-center">
-            <label for="address" class="form-label me-3 text-nowrap" style="min-width: 150px;">Address</label>
-            <textarea class="form-control border-dark" id="address" name="address" rows="4" placeholder="Enter your address" style="border-radius: 10px;"></textarea>
+    </div>
+
+    <div class="row bg-white" style="margin-left: 2rem; margin-right: 2rem; margin-bottom: 2rem;">
+        <table class="table table-striped w-max" id="itemsTable">
+            <thead>
+                <tr class="text-light" style="background-color: rgba(0, 42, 92, 1);">
+                    <th scope="col">No</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">QTY</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider" id="itemsTableBody">
+                @for (var rowCount = 0; rowCount < Model.Form.Items.Count; rowCount++)
+                {
+                    var item = Model.Form.Items[rowCount];
+                    <input asp-for="Form.Items[rowCount].SO_ITEM_ID" type="hidden" class="form-control" value="@item.SO_ITEM_ID" /> 
+                    <tr>
+                        <th scope="row">@(rowCount + 1)</th>
+                        <td>
+                            <button onclick="saveItemRow(this)" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button onclick="deleteItemRow(this)" type="button" class="btn btn-danger btn-sm">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <input asp-for="Form.Items[rowCount].ITEM_NAME" type="text" class="form-control" value="@item.ITEM_NAME" />
+                        </td>
+                        <td>
+                            <input asp-for="Form.Items[rowCount].QUANTITY" type="number" class="form-control" value="@item.QUANTITY" />
+                        </td>
+                        <td>
+                            <input asp-for="Form.Items[rowCount].PRICE" type="number" class="form-control" value="@item.PRICE" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" value="@(item.QUANTITY * item.PRICE)" readonly />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row w-max justify-content-center mb-4">
+        <button type="submit" class="btn btn-red text-light" style="margin-right: 1rem;" onclick="validateForm(event)">Save</button>
+        <a class="btn btn-back text-light">Close</a>
+    </div>
+</form>
+
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="errorModalLabel">Validation Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="p-2 mt-2 container-fluid d-flex justify-content-center align-items-center" style="height: auto; background-color: rgba(0, 42, 92, 1);">
-    <h2 class="text-white fs-4">Detail Item Information <i class="fa-solid fa-angles-down fa-sm"></i> </h2>
-</div>
+<script>
+    function validateForm(event) {
+        event.preventDefault();
+        
+        var form = $("#orderForm");
+        var itemsTableBody = document.getElementById('itemsTableBody');
+        var itemRows = itemsTableBody.querySelectorAll('tr');
+        var validItems = true;
+        
+        itemRows.forEach(function(row, index) {
+            var itemNameElement = row.querySelector(`input[name="Form.Items[${index}].ITEM_NAME"]`);
+            var quantityElement = row.querySelector(`input[name="Form.Items[${index}].QUANTITY"]`);
+            var priceElement = row.querySelector(`input[name="Form.Items[${index}].PRICE"]`);
 
-<div class="row w-max justify-content-between p-4">
-    <div class="col-md-7">
-        <a asp-controller="Order" asp-action="Edit" class="btn btn-red text-light">Add Item</a>
-    </div>
-    <div class="col-md-4 text-end">
-        <button type="button" class="btn btn-hint text-light">
-                <i class="fa fa-circle-question text-light"></i> Hint
-        </button>
-    </div>
-</div>
+            var itemName = itemNameElement ? itemNameElement.value.trim() : '';
+            var quantity = quantityElement ? quantityElement.value.trim() : '';
+            var price = priceElement ? priceElement.value.trim() : '';
 
-<div class="row bg-white m-4">
-    <table class="table table-striped w-max">
-        <thead>
-            <tr class="table-primary">
-                <th scope="col">No</th>
-                <th scope="col">Action</th>
-                <th scope="col">Item Name</th>
-                <th scope="col">QTY</th>
-                <th scope="col">Price</th>
-                <th scope="col">Total</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
+            if (itemName == "" && quantity == "" && price == "") {
+                row.remove();  // Hapus row yang tidak valid
+            }
+        });
+
+        // Cek kembali apakah ada item valid
+        itemRows = itemsTableBody.querySelectorAll('tr'); // Re-fetch item rows
+        if (itemRows.length == 0) {
+            validItems = false;
+        }
+
+
+        if (!validItems) {
+            // Show error modal if no valid items
+            $('#errorModal').modal('show');
+            $('#errorMessage').text('Please add at least one item with valid information.');
+        } else {
+            // If form is valid, submit the form
+            form.submit();
+        }
+    }
+
+    function addItemRow() {
+        let tableBody = document.getElementById('itemsTableBody');
+        let rowCount = tableBody.rows.length + 1;
+        let row = `
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <th scope="row">${rowCount}</th>
+                <td>
+                    <button onclick="saveItemRow(this)" type="button" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                    <button onclick="deleteItemRow(this)" type="button" class="btn btn-danger btn-sm">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+                <td><input type="text" class="form-control" name="Form.Items[${rowCount - 1}].ITEM_NAME" /></td>
+                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Quantity" /></td>
+                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Price" /></td>
+                <td><input type="number" class="form-control" name="Form.Items[${rowCount - 1}].Total" readonly /></td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td></td>
-                <td></td>
-                <td></td>
-              
-            </tr>
-        </tbody>
-    </table>
-</div>
+        `;
+        tableBody.insertAdjacentHTML('beforeend', row);
+    }
+
+    function saveItemRow(button) {
+        let row = button.closest('tr');
+        let inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.readOnly = true;
+            input.classList.add('saved-item');
+        });
+        let saveButton = row.querySelector('.btn-primary');
+        saveButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+        saveButton.setAttribute('onclick', 'editItemRow(this)');
+    }
+
+
+    function editItemRow(button) {
+        let row = button.closest('tr');
+        let inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.readOnly = false;
+        });
+        let saveButton = row.querySelector('.btn-primary');
+        saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+        saveButton.setAttribute('onclick', 'saveItemRow(this)');
+    }
+
+    function deleteItemRow(button) {
+        let row = button.closest('tr');
+        let itemId = row.querySelector('input[type="hidden"]').value; 
+        $.ajax({
+            url: '/Order/DeleteItem',
+            type: 'POST',
+            data: { itemId: itemId },
+            success: function (response) {
+                row.remove();
+            },
+            error: function (error) {
+                console.log(error)
+                alert("Error: " + error);
+            }
+        });
+    }
+
+</script>
