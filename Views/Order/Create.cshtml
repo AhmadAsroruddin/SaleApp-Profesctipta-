@@ -94,7 +94,15 @@
         let row = `
             <tr>
                 <th scope="row">${rowCount}</th>
-                <td><button class="btn btn-danger btn-sm" onclick="removeItemRow(this)">Remove</button></td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="saveItemRow(this)">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteItemRow(this)">
+                        <i class="fa-solid fa-trash"></i> 
+                    </button>
+                </td>
+
                 <td><input type="text" class="form-control" placeholder="Item Name"/></td>
                 <td><input type="number" class="form-control" placeholder="QTY"/></td>
                 <td><input type="number" class="form-control" placeholder="Price"/></td>
@@ -104,10 +112,43 @@
         tableBody.insertAdjacentHTML('beforeend', row);
     }
 
-    function removeItemRow(button) {
+    function saveItemRow(button) {
+        // Get the row of the button clicked
+        let row = button.closest('tr');
+        
+        // Disable inputs (make them readonly)
+        let inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.readOnly = true;
+        });
+
+        // Change the "Save" button to "Edit"
+        let saveButton = row.querySelector('.btn-primary');
+        saveButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+        saveButton.setAttribute('onclick', 'editItemRow(this)');
+    }
+
+    function editItemRow(button) {
+        // Get the row of the button clicked
+        let row = button.closest('tr');
+        
+        // Enable inputs for editing
+        let inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.readOnly = false;
+        });
+
+        // Change the "Edit" button back to "Save"
+        let saveButton = row.querySelector('.btn-primary');
+        saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+        saveButton.setAttribute('onclick', 'saveItemRow(this)');
+    }
+
+    function deleteItemRow(button) {
         let row = button.closest('tr');
         row.remove();
     }
+
     function selectCustomer(customer) {
         document.getElementById('customerDropdown').innerText = customer;
         document.getElementById('selectedCustomer').value = customer;

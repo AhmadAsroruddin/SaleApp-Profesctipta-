@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace SaleApp.Models;
 
 [Table("SO_ORDER")]
-public class Order :Controller
+public class Order :BaseModel
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int SO_ORDER_ID { get; set; }   
     public int ORDER_NO { get; set; }
     public DateTime ORDER_DATE{ get; set; }  

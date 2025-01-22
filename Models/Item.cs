@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace SaleApp.Models;
 
 [Table("SO_ITEM")]
-public class Item
+public class Item:BaseModel
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int SO_ITEM_ID { get; set; }   
     public int SO_ORDER_ID { get; set; } 
     [ValidateNever]
@@ -15,5 +16,5 @@ public class Item
     public required Order? Order { get; set; }
     public required string ITEM_NAME { get; set; } 
     public int QUANTITY { get; set; }    
-    public decimal PRICE { get; set; }  
+    public double PRICE { get; set; }  
 }
